@@ -34,7 +34,7 @@
       .logo-container {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
       }
 
       .logo {
@@ -42,44 +42,116 @@
         height: 234.1px;
       }
 
-      .button-container {
+      .search-container {
         display: flex;
-        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
       }
 
-      .button {
-        background-color: #92C83E;
-        border: none;
-        color: black;
-        padding: 12px 24px;
-        font-size: 16px;
-        font-weight: bold;
-        border-radius: 999px;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-      }
-
-      .button:hover {
-        background-color: #92C83E;
+      .search {
+        flex-grow: 1;
+        margin-right: 10px;
+        background-color: black;
+        border: 2px solid #92C83E;
         color: white;
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 999px;
+        transition: border-color 0.3s;
+      }
+
+      .search:focus {
+        outline: none;
+        border-color: #92C83E;
       }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <script src="https://apis.google.com/js/api.js"></script>
     <script>
-      function redirectToPage() {
-        window.location.href = 'https://script.google.com/macros/s/AKfycbzgraoW87egJFt5UsUsgRyVyJ-bxs5QNt2AiDjeWVL5LX17siMV0q27n_LZu0p3-hny6Q/exec'; // Reemplaza 'https://www.ejemplo.com' con la URL de la página a la que deseas redirigir
+      function filterData() {
+        var input, filter, table, tr, td, i, j;
+        input = document.getElementById("filterInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+
+        if (filter !== '') {
+          table.style.display = "table";
+        } else {
+          table.style.display = "none";
+        }
+
+        for (i = 0; i < tr.length; i++) {
+          var found = false;
+          td = tr[i].getElementsByTagName("td");
+          for (j = 0; j < td.length; j++) {
+            if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+              found = true;
+              break;
+            }
+          }
+          if (found) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
       }
+
+      // Cargar la API de Google Sheets
+      function loadSheetsApi() {
+        gapi.client.load('sheets', 'v4', fetchData);
+      }
+
+      // Obtener los datos de la hoja de cálculo
+      function fetchData() {
+        gapi.client.sheets.spreadsheets.values.get({
+          spreadsheetId: '1xFqUDNo2Wr89VyPOmwXNAECBnmrwnmWo_r-LOpLhvJ4',
+          range: `'Respuestas de formulario 1'!A:Z`
+        }).then(function(response) {
+          var values = response.result.values;
+          var table = document.getElementById("dataTable");
+
+          if (values && values.length > 0) {
+            for (var i = 0; i < values.length; i++) {
+              var row = values[i];
+              var tr = document.createElement("tr");
+              for (var j = 0; j < row.length; j++) {
+                var td = document.createElement("td");
+                td.textContent = row[j];
+                tr.appendChild(td);
+              }
+              table.appendChild(tr);
+            }
+          }
+        }, function(error) {
+          console.error(error);
+        });
+      }
+
+      // Inicializar la API de Google Sheets
+      function init() {
+        gapi.client.init({
+          apiKey: 'AIzaSyATXVYgAEC9dPaH8RydLbsuhpTsNFolg3w',
+          discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4']
+        }).then(function() {
+          loadSheetsApi();
+        }, function(error) {
+          console.error(error);
+        });
+      }
+
+      // Cargar la API de cliente de Google
+      gapi.load('client', init);
     </script>
   </head>
   <body>
     <div class="logo-container">
       <img class="logo" src="https://lh3.googleusercontent.com/pw/AIL4fc9VkVmnJYgEG4GXDTAmdk2A3OYNO66Cmq46fuLttJILSH8E2jLo8434HKMJ1U2c9FY0XzlNs8_XlyZalA6gH8v1_7ASFizrIjHk6BcqzAAJ8sAXPRiBhEWEU7Sxel7lZCjImcL7TQw_24QGJfJlOaE=w1228-h690-s-no" alt="Logo">
     </div>
-    
-    <div class="button-container">
-      <button class="button" onclick="redirectToPage()">"Ir a la página"</button>
+    <div class="search-container">
+      <input type="text" id="filterInput" placeholder="Búsqueda" class="search" onkeyup="filterData()">
     </div>
-    
     <table id="dataTable" style="display: none;">
       <tr>
         <th style="background-color: black; color: white;">Marca temporal</th>
@@ -87,15 +159,7 @@
         <th style="background-color: black; color: white;">Tema visto</th>
         <th style="background-color: black; color: white;">Comentarios</th>
       </tr>
-      <? for (var i = 0; i < data.length; i++) { ?>
-        <tr>
-          <? var row = data[i]; ?>
-          <td><?= new Date(row['Marca temporal']).toLocaleDateString() ?></td>
-          <td style="color: white;"><?= row['Nombre del mentee'] ?></td>
-          <td style="color: white;"><?= row['Tema visto'] ?></td>
-          <td style="color: white;"><?= row['Comentarios'] ?></td>
-        </tr>
-      <? } ?>
     </table>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
   </body>
 </html>
