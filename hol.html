@@ -98,53 +98,43 @@
         }
       }
 
-      // Cargar la API de Google Sheets
-      function loadSheetsApi() {
-        gapi.client.load('sheets', 'v4', fetchData);
-      }
+      // Obtener los datos de Google Sheets utilizando la API
+      function getDataFromSheet() {
+        var apiKey = 'AIzaSyATXVYgAEC9dPaH8RydLbsuhpTsNFolg3w';
+        var spreadsheetId = '1xFqUDNo2Wr89VyPOmwXNAECBnmrwnmWo_r-LOpLhvJ4';
+        var range = 'Respuestas de formulario 1!A:D';
 
-      // Obtener los datos de la hoja de cálculo
-      function fetchData() {
-        gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: '1xFqUDNo2Wr89VyPOmwXNAECBnmrwnmWo_r-LOpLhvJ4',
-          range: 'Respuestas de formulario 1!A:Z'
-        }).then(function(response) {
-          var values = response.result.values;
-          var table = document.getElementById("dataTable");
+        var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheetId + '/values/' + range + '?key=' + apiKey;
 
-          if (values && values.length > 0) {
-            for (var i = 0; i < values.length; i++) {
-              var row = values[i];
-              var tr = document.createElement("tr");
-              for (var j = 0; j < row.length; j++) {
-                var td = document.createElement("td");
-                td.textContent = row[j];
-                tr.appendChild(td);
-              }
-              table.appendChild(tr);
+        fetch(url)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            var values = data.values;
+            var table = document.getElementById("dataTable");
+
+            // Limpiar el contenido actual de la tabla
+            while (table.rows.length > 1) {
+              table.deleteRow(1);
             }
-          } else {
-            console.error('No se encontraron datos en la hoja de cálculo.');
-          }
-        }).catch(function(error) {
-          console.error('Error en la solicitud fetch:', error);
-        });
-      }
 
-      // Inicializar la API de Google Sheets
-      function init() {
-        gapi.client.init({
-          apiKey: 'AIzaSyATXVYgAEC9dPaH8RydLbsuhpTsNFolg3w',
-          discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4']
-        }).then(function() {
-          loadSheetsApi();
-        }).catch(function(error) {
-          console.error('Error al inicializar la API de Google Sheets:', error);
-        });
-      }
+            values.forEach(function(row, index) {
+              if (index === 0) return;  // Saltar la primera fila que contiene los encabezados
 
-      // Cargar la API de cliente de Google
-      gapi.load('client', init);
+              var tr = document.createElement("tr");
+              row.forEach(function(value) {
+                var td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+              });
+              table.appendChild(tr);
+            });
+          })
+          .catch(function(error) {
+            console.error('Error al obtener los datos de Google Sheets:', error);
+          });
+      }
     </script>
   </head>
   <body>
@@ -163,8 +153,11 @@
           <th style="background-color: black; color: white;">Comentarios</th>
         </tr>
       </thead>
-      <tbody></tbody>
     </table>
-    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+
+    <script>
+      getDataFromSheet();
+    </script>
   </body>
 </html>
+
