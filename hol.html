@@ -11,9 +11,11 @@
 
       table {
         border-collapse: collapse;
-        width: 100%;
+        width: calc(100% - 140px);
         border-radius: 10px;
         overflow: hidden;
+        margin-left: 70px;
+        margin-right: 70px;
       }
 
       th, td {
@@ -44,15 +46,15 @@
 
       .search-container {
         display: flex;
-        align-items: center;
+        justify-content: center;
         margin-bottom: 10px;
       }
 
       .search {
-        flex-grow: 1;
+        width: 500px;
         margin-right: 10px;
         background-color: black;
-        border: 2px solid #92C83E;
+        border: 2px solid #ffffff;
         color: white;
         padding: 8px;
         font-size: 16px;
@@ -64,6 +66,7 @@
         outline: none;
         border-color: #92C83E;
       }
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <script src="https://apis.google.com/js/api.js"></script>
@@ -103,6 +106,7 @@
         var apiKey = 'AIzaSyATXVYgAEC9dPaH8RydLbsuhpTsNFolg3w';
         var spreadsheetId = '1xFqUDNo2Wr89VyPOmwXNAECBnmrwnmWo_r-LOpLhvJ4';
         var range = 'Respuestas de formulario 1!A:D';
+
 
         var url = 'https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheetId + '/values/' + range + '?key=' + apiKey;
 
@@ -144,7 +148,7 @@
     <div class="search-container">
       <input type="text" id="filterInput" placeholder="Búsqueda" class="search" onkeyup="filterData()">
     </div>
-    <table id="dataTable" style="display: none;">
+    <table id="dataTable">
       <thead>
         <tr>
           <th style="background-color: black; color: white;">Marca temporal</th>
@@ -160,4 +164,5 @@
     </script>
   </body>
 </html>
+
 
