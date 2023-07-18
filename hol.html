@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        background-color: black;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      th, td {
+        border: 2px solid #EC008C;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: black;
+        color: white;
+      }
+
+      td {
+        color: white;
+      }
+
+      .logo-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        width: 416.3px;
+        height: 234.1px;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+      }
+
+      .button {
+        background-color: #92C83E;
+        border: none;
+        color: black;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      .button:hover {
+        background-color: #92C83E;
+        color: white;
+      }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <script>
+      function redirectToPage() {
+        window.location.href = 'https://script.google.com/macros/s/AKfycbzgraoW87egJFt5UsUsgRyVyJ-bxs5QNt2AiDjeWVL5LX17siMV0q27n_LZu0p3-hny6Q/exec'; // Reemplaza 'https://www.ejemplo.com' con la URL de la página a la que deseas redirigir
+      }
+    </script>
+  </head>
+  <body>
+    <div class="logo-container">
+      <img class="logo" src="https://lh3.googleusercontent.com/pw/AIL4fc9VkVmnJYgEG4GXDTAmdk2A3OYNO66Cmq46fuLttJILSH8E2jLo8434HKMJ1U2c9FY0XzlNs8_XlyZalA6gH8v1_7ASFizrIjHk6BcqzAAJ8sAXPRiBhEWEU7Sxel7lZCjImcL7TQw_24QGJfJlOaE=w1228-h690-s-no" alt="Logo">
+    </div>
+    
+    <div class="button-container">
+      <button class="button" onclick="redirectToPage()">"Ir a la página"</button>
+    </div>
+    
+    <table id="dataTable" style="display: none;">
+      <tr>
+        <th style="background-color: black; color: white;">Marca temporal</th>
+        <th style="background-color: black; color: white;">Nombre del mentee</th>
+        <th style="background-color: black; color: white;">Tema visto</th>
+        <th style="background-color: black; color: white;">Comentarios</th>
+      </tr>
+      <? for (var i = 0; i < data.length; i++) { ?>
+        <tr>
+          <? var row = data[i]; ?>
+          <td><?= new Date(row['Marca temporal']).toLocaleDateString() ?></td>
+          <td style="color: white;"><?= row['Nombre del mentee'] ?></td>
+          <td style="color: white;"><?= row['Tema visto'] ?></td>
+          <td style="color: white;"><?= row['Comentarios'] ?></td>
+        </tr>
+      <? } ?>
+    </table>
+  </body>
+</html>
