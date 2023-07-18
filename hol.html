@@ -81,7 +81,7 @@
           table.style.display = "none";
         }
 
-        for (i = 0; i < tr.length; i++) {
+        for (i = 1; i < tr.length; i++) {  // Comenzar desde 1 para omitir la fila de encabezado
           var found = false;
           td = tr[i].getElementsByTagName("td");
           for (j = 0; j < td.length; j++) {
@@ -155,12 +155,15 @@
       <input type="text" id="filterInput" placeholder="Búsqueda" class="search" onkeyup="filterData()">
     </div>
     <table id="dataTable" style="display: none;">
-      <tr>
-        <th style="background-color: black; color: white;">Columna 1</th>
-        <th style="background-color: black; color: white;">Columna 2</th>
-        <th style="background-color: black; color: white;">Columna 3</th>
-        <th style="background-color: black; color: white;">Columna 4</th>
-      </tr>
+      <thead>
+        <tr>
+          <th style="background-color: black; color: white;">Marco Temporal</th>
+          <th style="background-color: black; color: white;">Nombre del mentee</th>
+          <th style="background-color: black; color: white;">Tema visto</th>
+          <th style="background-color: black; color: white;">Comentarios</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
   </body>
