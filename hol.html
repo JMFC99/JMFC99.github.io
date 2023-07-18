@@ -51,7 +51,7 @@
       }
 
       .search {
-        width: 1200px;
+        width: 500px;
         margin-right: 10px;
         background-color: black;
         border: 2px solid #ffffff;
@@ -66,7 +66,6 @@
         outline: none;
         border-color: #ffffff;
       }
-
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <script src="https://apis.google.com/js/api.js"></script>
@@ -78,13 +77,7 @@
         table = document.getElementById("dataTable");
         tr = table.getElementsByTagName("tr");
 
-        if (filter !== '') {
-          table.style.display = "table";
-        } else {
-          table.style.display = "none";
-        }
-
-        for (i = 1; i < tr.length; i++) {  // Comenzar desde 1 para omitir la fila de encabezado
+        for (i = 1; i < tr.length; i++) {
           var found = false;
           td = tr[i].getElementsByTagName("td");
           for (j = 0; j < td.length; j++) {
@@ -98,6 +91,13 @@
           } else {
             tr[i].style.display = "none";
           }
+        }
+
+        // Mostrar u ocultar la tabla según el filtro
+        if (filter !== '') {
+          table.style.display = "table";
+        } else {
+          table.style.display = "none";
         }
       }
 
@@ -148,7 +148,7 @@
     <div class="search-container">
       <input type="text" id="filterInput" placeholder="Búsqueda" class="search" onkeyup="filterData()">
     </div>
-    <table id="dataTable">
+    <table id="dataTable" style="display: none;">
       <thead>
         <tr>
           <th style="background-color: black; color: white;">Marca temporal</th>
@@ -164,5 +164,3 @@
     </script>
   </body>
 </html>
-
-
